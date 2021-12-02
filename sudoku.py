@@ -32,8 +32,39 @@ def printGrid(gridPrint):
             printStr += str(gridPrint[i][j])
         print(printStr)
 
+# Check if a prospective value is promising
+def isPromising(row,col,digit):
+    switch = True
+    if switch:
+        for i in range(9):
+            if grid[row][i] == digit:
+                switch = False
+    if switch:
+        for i in range(9):
+            if grid[i][col] == digit:
+                switch = False
+    if switch:
+        square_row = (row//3)*3
+        square_col = (col//3)*3
+        for i in range(3):
+            for j in range(3):
+                if grid[square_row+i][square_col+j] == digit:
+                    switch = False    
+    return switch
+
+
 def solve():
-    print()
+    #global grid
+    for row in range(9):
+        for col in range(9):
+            if grid[row][col] == 0:
+                for digit in range(1,10): # here
+                    if isPromising(row,col,digit):
+                        grid[row][col] = digit
+                        solve()
+                        grid[row][col] = 0  #Backtrack step
+                return
+    printGrid(grid)
 
 grid = []
 with open('sudoku-input.txt') as f:
@@ -42,4 +73,7 @@ with open('sudoku-input.txt') as f:
         for x in next(f).split():
             line.append(int(x))
         grid.append(line)
+
 printGrid(grid)
+
+solve()
