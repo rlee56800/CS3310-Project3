@@ -18,3 +18,28 @@ OUTPUT:
 
     Print the solved puzzle in format of a 9x9 grid.
 '''
+
+def printGrid(gridPrint):
+    for i in range(9):
+        #print("i = " + str(i))
+        if (i%3 == 0) and (i != 0):
+            print()
+        printStr = ""
+        for j in range(9):
+            #print("j = " + str(j))
+            if (j%3 == 0) and (j != 0):
+                printStr += " "
+            printStr += str(gridPrint[i][j])
+        print(printStr)
+
+def solve():
+    print()
+
+grid = []
+with open('sudoku-input.txt') as f:
+    for i in range(9):
+        line = []
+        for x in next(f).split():
+            line.append(int(x))
+        grid.append(line)
+printGrid(grid)
