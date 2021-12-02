@@ -17,6 +17,9 @@ OUTPUT:
 Note: you can use the example explained in the class as your reference.
 '''
 
+def fill():
+    print()
+
 capacity = int(input("Please enter value for capacity: "))
 #capacity = 20#7 # testing
 total = 0
@@ -49,7 +52,7 @@ for i in range(items + 1):
     arr.append(arr1)
 
 
-#fill()
+fill()
 
 #for i in range(len(arr)):
 #    print(arr[i])
