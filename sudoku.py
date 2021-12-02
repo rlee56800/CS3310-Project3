@@ -22,12 +22,12 @@ OUTPUT:
 def printGrid(gridPrint):
     for i in range(9):
         #print("i = " + str(i))
-        if (i%3 == 0) and (i != 0):
+        if (i % 3 == 0) and (i != 0): # blank line after 3 rows
             print()
         printStr = ""
         for j in range(9):
             #print("j = " + str(j))
-            if (j%3 == 0) and (j != 0):
+            if (j % 3 == 0) and (j != 0): # doublt space after 3 columns
                 printStr += " "
             printStr += str(gridPrint[i][j])
         print(printStr)
@@ -44,29 +44,32 @@ def isPromising(row,col,digit):
             if grid[i][col] == digit:
                 switch = False
     if switch:
-        square_row = (row//3)*3
-        square_col = (col//3)*3
+        bigSquareRow = (row // 3) * 3
+        bigSquareCol = (col // 3) * 3
         for i in range(3):
             for j in range(3):
-                if grid[square_row+i][square_col+j] == digit:
+                if grid[bigSquareRow + i][bigSquareCol + j] == digit:
                     switch = False    
     return switch
 
 
 def solve():
-    #global grid
     for row in range(9):
         for col in range(9):
-            if grid[row][col] == 0:
-                for digit in range(1,10): # here
-                    if isPromising(row,col,digit):
-                        grid[row][col] = digit
+            if grid[row][col] == 0: # If space is blank
+                for digit in range(1,10): # Assigns a number 1-9 to a square
+                    if isPromising(row,col,digit): # Checks if the number is promising
+                        grid[row][col] = digit # A promising solution is reached
                         solve()
-                        grid[row][col] = 0  #Backtrack step
+                        grid[row][col] = 0
                 return
+    print("\nSolution grid:")
     printGrid(grid)
 
+
 grid = []
+
+
 with open('sudoku-input.txt') as f:
     for i in range(9):
         line = []
@@ -74,6 +77,7 @@ with open('sudoku-input.txt') as f:
             line.append(int(x))
         grid.append(line)
 
+print("Initial grid:")
 printGrid(grid)
 
 solve()
