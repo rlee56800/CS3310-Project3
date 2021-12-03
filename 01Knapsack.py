@@ -21,17 +21,17 @@ class Node:
         self.level = l
         self.profit = p
         self.weight = w
-        self.bound = None
 
-    def toString():
-        print("Node profit: " + profit)
-        print("Node weight: " + weight)
+    def printStr(self, mp):
+        print("Node level: " + str(self.level))
+        print("Node profit: " + str(self.profit))
+        print("Node weight: " + str(self.weight))
+        print("Max profit: " + str(mp))
+        print()
 
 
-def bound(u, n, p, w, W):
-    if(u.weight >= W):
-        return 0
-    if(u.weight >= W):
+def bound(u):
+    if u.weight >= W:
         return 0 # return 0 for bound if node is unpromising
     else:
         result = u.profit
@@ -42,58 +42,76 @@ def bound(u, n, p, w, W):
             result += p[j]
             j += 1
     k = j # use k for consistency with formula in text
-    if k <= n:
-        result += (W - totweight) * p[k] / w[k] # or //?
-        # grab fraction of kth item
+    if k <= (n - 1):
+        result += (W - totweight) * p[k] / w[k] # grab fraction of kth item
     return result
 
 
-def knapsack3(n, p, w, W, maxProfit):
+def knapsack3(n, p, w, W):
     pq = [] # initialize pq to be empty
-    v = Node(0, 0, 0) # initialize v to the root
+    v = Node(-1, 0, 0) # initialize v to the root
     maxProfit = 0
     v.bound = bound(v)
+    counter = 0
+
     pq.append(v)
-    while not pq: # while pq is not empty
-        pq.pop(v) # remove node with the best bound (call sort???)
-        pq.sort(key=lambda x: x.bound, reverse=True) # does True mean increasing
+    pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+    
+    while len(pq): # while pq is not empty
+        print(counter)
+        counter += 1
+        v = pq.pop() # remove node with the best bound
+        v.printStr(maxProfit)
 
         if v.bound > maxProfit: # check if node is stil promising
-            u = Node(v.level + 1, v.weight + w[u.level], v.profit + p[u.level])
+            u = Node(0, 0, 0)
+            u.level = v.level + 1
+            u.weight = v.weight + w[u.level]
+            u.profit = v.profit + p[u.level]
                 # set u to child that includes next item
-            if(u.weight <= W) and (u.profit > maxProfit):
+            if (u.weight <= W) and (u.profit > maxProfit):
                 maxProfit = u.profit
-                u.bound = bound(u) # or is this outside the if
+            u.bound = bound(u)
             if u.bound > maxProfit:
                 pq.append(u)
+                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
                 # set u to child that does not include next item (placement...)
-                u.weight = v.weight # inside if?
-                u.profit = v.profit # ^
-                u.bound = bound(u) # ^
-                if u.bound > maxProfit: # ^
-                    pq.append(u)
+#            u2 = Node(u.level, v.profit, v.weight)
+#            u2.bound = bound(u2)
+#            if u2.bound > maxProfit:
+#                pq.append(u2)
+#                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+            #u.weight = v.weight # inside if?
+            #u.profit = v.profit # ^
+            #u.bound = bound(u) # ^
+            #if u.bound > maxProfit: # ^
+            #    pq.append(u)
+    
+    return maxProfit
 
 
 
 
 
-#capacity = int(input("Please enter value for capacity: "))
-capacity = 20#7 # testing
-total = 0
-profit = []
-weight = []
-arr = []
-usedProfit = []
-usedWeight = []
+W = 16 # capacity
+#total = 0
+p = [] # profit
+w = [] # weight
+maxProfit = 0
+#profitperunit = [] # take a wild guess
 
-with open('input.txt') as f:
-    items = int(next(f)) # first number is amount of items
+with open('01Knapsack-input.txt') as f:
+    n = int(next(f)) # first number is amount of items
     for x in next(f).split(): # first row is profit
-        profit.append(int(x))
+        p.append(int(x))
     for x in next(f).split(): # second row is weights
-        weight.append(int(x))
-#print(profit)
-#print(weight)
+        w.append(int(x))
+
+#print(p)
+#print(w)
+
+maxProfit = knapsack3(len(p), p, w, W)
+print("END maxprofit = ", str(maxProfit))
 
 '''
 capacity = 7
@@ -101,7 +119,7 @@ total = 0
 items = 4
 profit = [1,4,5,7]
 weight = [1,3,4,5]
-arr = []'''
+arr = []
 
 for i in range(items + 1):
     arr1 = []
@@ -118,4 +136,4 @@ for i in range(items + 1):
 print("Max Profit: " + str(arr[items][capacity]))
 print("Items used (profit, then weight):")
 print(usedProfit)
-print(usedWeight)
+print(usedWeight)'''
