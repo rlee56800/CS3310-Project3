@@ -16,9 +16,66 @@ OUTPUT:
 
 Note: you can use the example explained in the class as your reference.
 '''
+class Node:
+    def __init__(self, l, p, w):
+        self.level = l
+        self.profit = p
+        self.weight = w
+        self.bound = None
 
-def fill():
-    print()
+    def toString():
+        print("Node profit: " + profit)
+        print("Node weight: " + weight)
+
+
+def bound(u, n, p, w, W):
+    if(u.weight >= W):
+        return 0
+    if(u.weight >= W):
+        return 0 # return 0 for bound if node is unpromising
+    else:
+        result = u.profit
+        j = u.level + 1
+        totweight = u.weight
+        while(j <= n) and (totweight + w[j] <= W):
+            totweight += w[j] # Grab as many items as possible
+            result += p[j]
+            j += 1
+    k = j # use k for consistency with formula in text
+    if k <= n:
+        result += (W - totweight) * p[k] / w[k] # or //?
+        # grab fraction of kth item
+    return result
+
+
+def knapsack3(n, p, w, W, maxProfit):
+    pq = [] # initialize pq to be empty
+    v = Node(0, 0, 0) # initialize v to the root
+    maxProfit = 0
+    v.bound = bound(v)
+    pq.append(v)
+    while not pq: # while pq is not empty
+        pq.pop(v) # remove node with the best bound (call sort???)
+        pq.sort(key=lambda x: x.bound, reverse=True) # does True mean increasing
+
+        if v.bound > maxProfit: # check if node is stil promising
+            u = Node(v.level + 1, v.weight + w[u.level], v.profit + p[u.level])
+                # set u to child that includes next item
+            if(u.weight <= W) and (u.profit > maxProfit):
+                maxProfit = u.profit
+                u.bound = bound(u) # or is this outside the if
+            if u.bound > maxProfit:
+                pq.append(u)
+                # set u to child that does not include next item (placement...)
+                u.weight = v.weight # inside if?
+                u.profit = v.profit # ^
+                u.bound = bound(u) # ^
+                if u.bound > maxProfit: # ^
+                    pq.append(u)
+
+
+
+
 
 #capacity = int(input("Please enter value for capacity: "))
 capacity = 20#7 # testing
@@ -53,7 +110,7 @@ for i in range(items + 1):
     arr.append(arr1)
 
 
-fill()
+#fill()
 
 #for i in range(len(arr)):
 #    print(arr[i])
