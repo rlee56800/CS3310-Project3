@@ -16,19 +16,28 @@ OUTPUT:
 
 Note: you can use the example explained in the class as your reference.
 '''
+
+def printPQ(pq):
+    pqueue = []
+    for i in pq:
+        pqueue.append(i.level + 1)
+    
+    print("Priority queue:", pqueue)
+
 class Node:
     def __init__(self, l, p, w):
         self.level = l
         self.profit = p
         self.weight = w
 
-    def printStr(self, mp):
-        print("Node level: " + str(self.level))
-        print("Node profit: " + str(self.profit))
+    def printStr(self, mp, pq):
+        print("Node level: " + str(self.level + 1))
+        print("Node profit: $" + str(self.profit))
         print("Node weight: " + str(self.weight))
-        print("Max profit: " + str(mp))
+        print("Node bound: $" + str(self.bound))
+        print("Max profit: $" + str(mp))
+        printPQ(pq) # weird because it used to be separate
         print()
-
 
 def bound(u):
     if u.weight >= W:
@@ -56,37 +65,42 @@ def knapsack3(n, p, w, W):
     #counter = 0
 
     pq.append(v)
+    v.printStr(maxProfit, pq)
     pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
     
     while len(pq): # while pq is not empty
         #print(counter)
         #counter += 1
+        #printPQ(pq)
         v = pq.pop() # remove node with the best bound
-        v.printStr(maxProfit)
-
+        
         if v.bound > maxProfit: # check if node is stil promising
+            
+            # left child
             u = Node(0, 0, 0)
             u.level = v.level + 1
             u.weight = v.weight + w[u.level]
             u.profit = v.profit + p[u.level]
-                # set u to child that includes next item
             if (u.weight <= W) and (u.profit > maxProfit):
                 maxProfit = u.profit
             u.bound = bound(u)
             if u.bound > maxProfit:
                 pq.append(u)
+                u.printStr(maxProfit, pq)
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
-                # set u to child that does not include next item (placement...)
-            u2 = Node(u.level, v.profit, v.weight)
-            u2.bound = bound(u2)
-            if u2.bound > maxProfit:
-                pq.append(u2)
-                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
-            #u.weight = v.weight # inside if?
-            #u.profit = v.profit # ^
-            #u.bound = bound(u) # ^
-            #if u.bound > maxProfit: # ^
-            #    pq.append(u)
+             
+            # right child
+#            u2 = Node(u.level, v.profit, v.weight)
+#            u2.bound = bound(u2)
+#            if u2.bound > maxProfit:
+#                pq.append(u2)
+#                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+#            u.weight = v.weight
+#            u.profit = v.profit
+#            u.bound = bound(u) 
+#            if u.bound > maxProfit:
+#                pq.append(u)
+#                u.printStr(maxProfit, pq)
     
     return maxProfit
 
