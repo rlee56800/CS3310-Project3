@@ -16,18 +16,25 @@ OUTPUT:
 
 Note: you can use the example explained in the class as your reference.
 '''
-
-def printPQ(pq):
+counter = [1]
+def printPQ(pqu):
     pqueue = []
-    #j = 1
-    for i in pq:
+    for i in pqu:
         pqueue2 = []
         pqueue2.append(i.level + 1)
         pqueue2.append(i.number)
-        #j += 1
         pqueue.append(pqueue2)
     
     print("Priority queue:", pqueue)
+
+def addNew(node):
+    i = 0
+    while i < len(pq):
+        if pq[i].nbound > node.nbound:
+            break
+        i += 1
+    pq.insert(i, node)
+
 
 class Node:
     def __init__(self, l, p, w):
@@ -38,10 +45,12 @@ class Node:
     def printStr(self, mp, pq):
         nn[self.level] += 1
         self.number = nn[self.level]
+        print(counter[0])
+        counter[0] += 1
         print("Current node: (" + str(self.level + 1) + ", " + str(self.number) + ")")
         print("Node profit: $" + str(self.profit))
         print("Node weight: " + str(self.weight))
-        print("Node bound: $" + str(self.bound))
+        print("Node bound: $" + str(self.nbound))
         print("Max profit: $" + str(mp))
         printPQ(pq) # weird because it used to be separate
         print()
@@ -65,14 +74,13 @@ def bound(u):
 
 
 def knapsack3(n, p, w, W):
-    pq = [] # initialize pq to be empty
-    v = Node(-1, 0, 0) # initialize v to the root
+    v = Node(-1, 0, 0) # initialize v to the root (-1 to make array traversal easier)
     maxProfit = 0
-    v.bound = bound(v)
-    #counter = 0
+    v.nbound = bound(v)
 
-    pq.append(v)
-    pq.sort(key=lambda x: x.bound, reverse=True) # idk: sorts priority queue in decreasing order (highest bound first)
+    addNew(v)
+    #pq.append(v)
+    #pq.sort(key=lambda x: x.nbound, reverse=True) # idk: sorts priority queue in decreasing order (highest bound first)
     v.printStr(maxProfit, pq)
     
     while len(pq): # while pq is not empty
@@ -81,7 +89,7 @@ def knapsack3(n, p, w, W):
         #printPQ(pq)
         v = pq.pop() # remove node with the best bound
         
-        if v.bound > maxProfit: # check if node is stil promising
+        if v.nbound > maxProfit: # check if node is stil promising
             
             # left child
             print("left")
@@ -91,20 +99,24 @@ def knapsack3(n, p, w, W):
             u.profit = v.profit + p[u.level]
             if (u.weight <= W) and (u.profit > maxProfit):
                 maxProfit = u.profit
-            u.bound = bound(u)
-            if u.bound > maxProfit:
-                pq.append(u)
-                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
-                u.printStr(maxProfit, pq)
+            u.nbound = bound(u)
+            u.printStr(maxProfit, pq)
+            if u.nbound > maxProfit:
+                addNew(u)
+                #pq.append(u)
+                #pq.sort(key=lambda x: x.nbound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+                #u.printStr(maxProfit, pq)
              
             # right child
             print("right")
             u2 = Node(u.level, v.profit, v.weight)
-            u2.bound = bound(u2)
-            if u2.bound > maxProfit:
-                pq.append(u2)
-                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
-                u2.printStr(maxProfit, pq)
+            u2.nbound = bound(u2)
+            u2.printStr(maxProfit, pq)
+            if u2.nbound > maxProfit:
+                addNew(u2)
+                #pq.append(u2)
+                #pq.sort(key=lambda x: x.nbound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+                #u2.printStr(maxProfit, pq)
 #            u.weight = v.weight
 #            u.profit = v.profit
 #            u.bound = bound(u) 
@@ -124,6 +136,7 @@ p = [] # profit
 w = [] # weight
 nn = [] # node number
 maxProfit = 0
+pq = [] # initialize pq to be empty
 #profitperunit = [] # take a wild guess
 
 with open('01Knapsack-input.txt') as f:
@@ -134,7 +147,7 @@ with open('01Knapsack-input.txt') as f:
     for x in next(f).split(): # second row is weights
         w.append(int(x))
     n = len(p)
-
+nn[-1] = -1
 #print(p)
 #print(w)
 
