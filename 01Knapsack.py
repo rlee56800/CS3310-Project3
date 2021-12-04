@@ -66,7 +66,7 @@ def knapsack3(n, p, w, W):
 
     pq.append(v)
     v.printStr(maxProfit, pq)
-    pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+    pq.sort(key=lambda x: x.bound, reverse=True) # idk: sorts priority queue in decreasing order (highest bound first)
     
     while len(pq): # while pq is not empty
         #print(counter)
@@ -77,6 +77,7 @@ def knapsack3(n, p, w, W):
         if v.bound > maxProfit: # check if node is stil promising
             
             # left child
+            print("left")
             u = Node(0, 0, 0)
             u.level = v.level + 1
             u.weight = v.weight + w[u.level]
@@ -90,10 +91,12 @@ def knapsack3(n, p, w, W):
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
              
             # right child
+            print("right")
             u2 = Node(u.level, v.profit, v.weight)
             u2.bound = bound(u2)
             if u2.bound > maxProfit:
                 pq.append(u2)
+                u2.printStr(maxProfit, pq)
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
 #            u.weight = v.weight
 #            u.profit = v.profit
