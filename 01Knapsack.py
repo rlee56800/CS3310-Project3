@@ -34,10 +34,10 @@ class Node:
         self.level = l
         self.profit = p
         self.weight = w
-        nn[l] += 1
-        self.number = nn[l]
-
+        
     def printStr(self, mp, pq):
+        nn[self.level] += 1
+        self.number = nn[self.level]
         print("Current node: (" + str(self.level + 1) + ", " + str(self.number) + ")")
         print("Node profit: $" + str(self.profit))
         print("Node weight: " + str(self.weight))
