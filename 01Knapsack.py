@@ -119,7 +119,7 @@ def knapsack3(n, p, w, W):
 
 
 
-W = 16 # capacity
+W = int(input("Please enter value for capacity: "))#16 # capacity
 p = [] # profit
 w = [] # weight
 nn = [] # node number
