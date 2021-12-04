@@ -36,16 +36,17 @@ def printGrid(gridPrint):
 def isPromising(row,col,digit):
     switch = True
     if switch:
-        for i in range(9):
+        for i in range(9): # checks row for same number
             if grid[row][i] == digit:
                 switch = False
     if switch:
-        for i in range(9):
+        for i in range(9): # checks column for same number
             if grid[i][col] == digit:
                 switch = False
     if switch:
-        bigSquareRow = (row // 3) * 3
-        bigSquareCol = (col // 3) * 3
+        # checks "big square" (3x3) for same number
+        bigSquareRow = (row // 3) * 3 # row of "big square"
+        bigSquareCol = (col // 3) * 3 # col of "big square"
         for i in range(3):
             for j in range(3):
                 if grid[bigSquareRow + i][bigSquareCol + j] == digit:
@@ -60,7 +61,7 @@ def solve():
                 for digit in range(1,10): # Assigns a number 1-9 to a square
                     if isPromising(row,col,digit): # Checks if the number is promising
                         grid[row][col] = digit # A promising solution is reached
-                        solve()
+                        solve() # backtracking
                         grid[row][col] = 0
                 return
     print("\nSolution grid:")
