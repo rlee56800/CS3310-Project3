@@ -47,7 +47,7 @@ def bound(u):
         j = u.level + 1
         #print("j = " + str(j))
         totweight = u.weight
-        while(j <= n) and (totweight + w[j] <= W):
+        while(j <= n-1) and (totweight + w[j] <= W):
             totweight += w[j] # Grab as many items as possible
             result += p[j]
             j += 1
@@ -90,11 +90,11 @@ def knapsack3(n, p, w, W):
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
              
             # right child
-#            u2 = Node(u.level, v.profit, v.weight)
-#            u2.bound = bound(u2)
-#            if u2.bound > maxProfit:
-#                pq.append(u2)
-#                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+            u2 = Node(u.level, v.profit, v.weight)
+            u2.bound = bound(u2)
+            if u2.bound > maxProfit:
+                pq.append(u2)
+                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
 #            u.weight = v.weight
 #            u.profit = v.profit
 #            u.bound = bound(u) 
@@ -112,6 +112,7 @@ W = 16 # capacity
 #total = 0
 p = [] # profit
 w = [] # weight
+nn = [] # node number
 maxProfit = 0
 #profitperunit = [] # take a wild guess
 
@@ -119,6 +120,7 @@ with open('01Knapsack-input.txt') as f:
     n = int(next(f)) # first number is amount of items
     for x in next(f).split(): # first row is profit
         p.append(int(x))
+        nn.append(0)
     for x in next(f).split(): # second row is weights
         w.append(int(x))
 
