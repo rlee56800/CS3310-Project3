@@ -1,7 +1,7 @@
 '''
 Task #2 – 0/1 Knapsack Problem                                                  (65 Points)
 
-Use the Best-First  search with Branch-and-Bound algorithm to solve 0/1 knapsack problem.
+Use the Best-First search with Branch-and-Bound algorithm to solve 0/1 knapsack problem.
 
 INPUT:
     Positive integer W (knapsack capacity) and an input.txt file that contains the weights
@@ -19,8 +19,13 @@ Note: you can use the example explained in the class as your reference.
 
 def printPQ(pq):
     pqueue = []
+    #j = 1
     for i in pq:
-        pqueue.append(i.level + 1)
+        pqueue2 = []
+        pqueue2.append(i.level + 1)
+        pqueue2.append(i.number)
+        #j += 1
+        pqueue.append(pqueue2)
     
     print("Priority queue:", pqueue)
 
@@ -29,9 +34,11 @@ class Node:
         self.level = l
         self.profit = p
         self.weight = w
+        nn[l] += 1
+        self.number = nn[l]
 
     def printStr(self, mp, pq):
-        print("Node level: " + str(self.level + 1))
+        print("Current node: (" + str(self.level + 1) + ", " + str(self.number) + ")")
         print("Node profit: $" + str(self.profit))
         print("Node weight: " + str(self.weight))
         print("Node bound: $" + str(self.bound))
@@ -120,12 +127,13 @@ maxProfit = 0
 #profitperunit = [] # take a wild guess
 
 with open('01Knapsack-input.txt') as f:
-    n = int(next(f)) # first number is amount of items
+    #n = int(next(f)) # first number is amount of items
     for x in next(f).split(): # first row is profit
         p.append(int(x))
         nn.append(0)
     for x in next(f).split(): # second row is weights
         w.append(int(x))
+    n = len(p)
 
 #print(p)
 #print(w)
