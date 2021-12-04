@@ -72,8 +72,8 @@ def knapsack3(n, p, w, W):
     #counter = 0
 
     pq.append(v)
-    v.printStr(maxProfit, pq)
     pq.sort(key=lambda x: x.bound, reverse=True) # idk: sorts priority queue in decreasing order (highest bound first)
+    v.printStr(maxProfit, pq)
     
     while len(pq): # while pq is not empty
         #print(counter)
@@ -94,8 +94,8 @@ def knapsack3(n, p, w, W):
             u.bound = bound(u)
             if u.bound > maxProfit:
                 pq.append(u)
-                u.printStr(maxProfit, pq)
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+                u.printStr(maxProfit, pq)
              
             # right child
             print("right")
@@ -103,8 +103,8 @@ def knapsack3(n, p, w, W):
             u2.bound = bound(u2)
             if u2.bound > maxProfit:
                 pq.append(u2)
-                u2.printStr(maxProfit, pq)
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+                u2.printStr(maxProfit, pq)
 #            u.weight = v.weight
 #            u.profit = v.profit
 #            u.bound = bound(u) 
