@@ -36,6 +36,7 @@ def bound(u):
     else:
         result = u.profit
         j = u.level + 1
+        #print("j = " + str(j))
         totweight = u.weight
         while(j <= n) and (totweight + w[j] <= W):
             totweight += w[j] # Grab as many items as possible
@@ -52,14 +53,14 @@ def knapsack3(n, p, w, W):
     v = Node(-1, 0, 0) # initialize v to the root
     maxProfit = 0
     v.bound = bound(v)
-    counter = 0
+    #counter = 0
 
     pq.append(v)
     pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
     
     while len(pq): # while pq is not empty
-        print(counter)
-        counter += 1
+        #print(counter)
+        #counter += 1
         v = pq.pop() # remove node with the best bound
         v.printStr(maxProfit)
 
@@ -76,11 +77,11 @@ def knapsack3(n, p, w, W):
                 pq.append(u)
                 pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
                 # set u to child that does not include next item (placement...)
-#            u2 = Node(u.level, v.profit, v.weight)
-#            u2.bound = bound(u2)
-#            if u2.bound > maxProfit:
-#                pq.append(u2)
-#                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
+            u2 = Node(u.level, v.profit, v.weight)
+            u2.bound = bound(u2)
+            if u2.bound > maxProfit:
+                pq.append(u2)
+                pq.sort(key=lambda x: x.bound, reverse=True) # sorts priority queue in decreasing order (highest bound first)
             #u.weight = v.weight # inside if?
             #u.profit = v.profit # ^
             #u.bound = bound(u) # ^
@@ -111,7 +112,7 @@ with open('01Knapsack-input.txt') as f:
 #print(w)
 
 maxProfit = knapsack3(len(p), p, w, W)
-print("END maxprofit = ", str(maxProfit))
+print("maxprofit = ", str(maxProfit))
 
 '''
 capacity = 7
